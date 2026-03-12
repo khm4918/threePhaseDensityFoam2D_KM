@@ -438,7 +438,7 @@ scalar r0      = 2.3e-03;
 scalar a0      = 0.1e-03;
 int n          = 12;
 
-scalar Ps      = 550e6;			//shock peak
+scalar Ps      = 460e6;			//shock peak
 scalar t_star  = 0.9e-6;		//shock decay time
 scalar u_shock = 1900;
 
