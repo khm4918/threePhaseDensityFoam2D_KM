@@ -465,10 +465,11 @@ scalar Wmol_w     = Param_Eos[Wmol][0];
 scalar Covol_w 	  = Param_Eos[Covol][0];
 
 // ------------------------------------------------------------------------- //
-// Correct stiffened-gas post-shock density
+// Correct NASG post-shock density
 
 scalar c0 = Foam::sqrt(gamma_w * ((pAmbient + pInf_w)/(rhoAmbient*(1-(rhoAmbient*Covol_w)))));
 scalar Ms = u_shock/c0;
+scalar rhoPost = rhoAmbient / (1 - (Ps - pAmbient)/(rhoAmbient * Foam::pow(u_shock, 2)));
 
 Info<< "  gamma   = " << gamma_w << nl
     << "  pInf_w    = " << pInf_w  << nl
@@ -609,8 +610,9 @@ label count_rhoadbt = 0;
        // p.correctBoundaryConditions();
        // rho.correctBoundaryConditions();                  
  
- scalar gabba = 0;                   
- scalar rhoPost = 0;                  
+// old weird way to find actual max rhoPost in field 
+// scalar gabba = 0;                   
+// scalar rhoPost = 0;                  
     
     forAll(p,cellI){
     scalar xx=mesh.C()[cellI].x();
@@ -654,13 +656,13 @@ label count_rhoadbt = 0;
 
     if (p_friedlander > pAmbient + SMALL)
     {
-        // Initial post-shock density
-		if (gabba == 0)
-		{
-			rhoPost += rhoAmbient / (1 - (p_friedlander - pAmbient)/(rhoAmbient * Foam::pow(u_shock, 2)));
-			Info << " Setting max rho Post: " << rhoPost << endl;
-			gabba += 1;
-		}
+        // Initial post-shock density  BREAKS AT CERTAIN CORE COUNTS
+		//if (gabba == 0)
+		//{
+		//	rhoPost += rhoAmbient / (1 - (p_friedlander - pAmbient)/(rhoAmbient * Foam::pow(u_shock, 2)));
+		//	Info << " Setting max rho Post: " << rhoPost << endl;
+		//	gabba += 1;
+		//}
 		
         // Other post-shock density
         scalar rho_adbt = rhoAmbient / (1 - (p_friedlander - pAmbient)/(rhoAmbient * Foam::pow(u_shock, 2)));
