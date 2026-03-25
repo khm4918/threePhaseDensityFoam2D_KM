@@ -465,6 +465,9 @@ scalar Cv_w       = Param_Eos[Cv][0];
 scalar Wmol_w     = Param_Eos[Wmol][0];
 scalar Covol_w 	  = Param_Eos[Covol][0];
 
+//correction to temperature field
+const scalar T_ambo = (1-(rhoAmbient*Covol_w)) * (pAmbient + pInf_w) / ((Cv_w * rhoAmbient) * (gamma_w-1));
+
 // Cavity parameters
 
 int ncav = 12;
@@ -728,7 +731,7 @@ label count_rhoadbt = 0;
         // Assign fields
         p[cellI] = p_friedlander;
 		rho[cellI] = rho_adbt;
-		T[cellI] = T_adbt;		
+		T[cellI] = TAmbient + T_adbt - T_ambo;	
 
         scalar ux = -x_shift / safe_rmag;
         scalar uy = -y_shift / safe_rmag;

@@ -464,6 +464,9 @@ scalar Cv_w       = Param_Eos[Cv][0];
 scalar Wmol_w     = Param_Eos[Wmol][0];
 scalar Covol_w 	  = Param_Eos[Covol][0];
 
+//correction to temperature field
+const scalar T_ambo = (1-(rhoAmbient*Covol_w)) * (pAmbient + pInf_w) / ((Cv_w * rhoAmbient) * (gamma_w-1));
+
 // ------------------------------------------------------------------------- //
 // Correct NASG post-shock density
 
@@ -694,7 +697,6 @@ label count_rhoadbt = 0;
         // Internal energy and temperature
 		//Info << "Estimated Rho: " << rho_adbt << endl;
         scalar T_adbt = (1-(rho_adbt*Covol_w)) * (p_friedlander + pInf_w) / ((Cv_w * rho_adbt) * (gamma_w-1));
-		scalar T_ambo = (1-(rhoAmbient*Covol_w)) * (pAmbient + pInf_w) / ((Cv_w * rhoAmbient) * (gamma_w-1));
 		//Info << " T_ambo        = " << T_ambo << endl;
 		//Info << "  T_shock    = " << T_adbt << endl;
 
